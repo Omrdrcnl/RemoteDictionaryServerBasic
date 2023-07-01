@@ -34,7 +34,31 @@ class Program
             Console.WriteLine("Keys değeri; " + keyValue.Keys.ElementAt(i) + "  Value Değeri: " + DonenDeger[i]) ;
         }
 
-        redis.Close();
+        foreach(var key in keyValue.Keys)
+        {
+            if (key.Contains("Age")) {
+                database.KeyDelete(key);
+                Console.WriteLine("Deger basarıyla silindi");
+                break;
+            }
+            
+        };
+
+        DonenDeger.Clear();
+
+        foreach(var key in keyValue.Keys)
+        {
+            RedisValue value = database.StringGet(key);
+            DonenDeger.Add(value);
+        }
+
+        for (int i = 0; i < keyValue.Count; i++)
+        {
+            Console.WriteLine("Silme işleminden sonra Keys değeri; " + keyValue.Keys.ElementAt(i) + "       Silme işleminden sonra Value Değeri: " + DonenDeger[i]);
+        }
+
+
+       redis.Close();
 
        Console.ReadLine();
     }
